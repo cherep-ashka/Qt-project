@@ -15,7 +15,7 @@ Custom::Custom(char *pargv[], QWidget *parent)
 	SetArgv(pargv);
 
 	ui.setupUi(this);
-
+	// инициализация слотов
 	connect(playBackTimer, SIGNAL(timeout()), this, SLOT(PlaybackStep()));
 	
 
