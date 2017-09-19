@@ -17,8 +17,6 @@ Custom::Custom(char *pargv[], QWidget *parent)
 	ui.setupUi(this);
 	// инициализация слотов
 	connect(playBackTimer, SIGNAL(timeout()), this, SLOT(PlaybackStep()));
-	
-
 	connect(ui.paint, SIGNAL(clicked()), this, SLOT(PaintGraph()));
 	connect(ui.exp, SIGNAL(clicked()), this, SLOT(Export()));
 	connect(ui.exit, SIGNAL(clicked()), this, SLOT(Exit()));
@@ -35,20 +33,20 @@ Custom::Custom(char *pargv[], QWidget *parent)
 	qwerty.open(QIODevice::ReadOnly | QIODevice::Text);
 
 	QString str_all = str.readAll();
-	QStringList rows = str_all.split('\n');
+	QStringList rows = str_all.split('\n'); //строка как элемент массива
 
 	datas = new QString*[rows.count()];
-	int count_col = (rows[0].split(QRegExp("\\s+"))).count() - 1;
-	count_row = rows.count();
+	int count_col = (rows[0].split(QRegExp("\\s+"))).count() - 1; //подсчет количества элементов в строке
+	count_row = rows.count(); //подсчет количества строк
 	QStringList local_str;
-	for (int i = 0; i<count_row - 1; i++)
+	for (int i = 0; i<count_row - 1; i=i++) //пока строки не закончились
 	{
-		datas[i] = new QString[count_col];
-		local_str = rows[i].split(QRegExp("\\s+"));
+		datas[i] = new QString[count_col]; //создание массивов, размерность каждого из которых равна количеству элементов в строке
+		local_str = rows[i].split(QRegExp("\\s+")); //разбиение каждой строки на элементы (столбцы)
 
-		for (int j = 0; j<count_col; j++)
+		for (int j = 0; j<count_col; j++) //пока элементы строки не закончились
 		{
-			datas[i][j] = local_str[j];
+			datas[i][j] = local_str[j]; //запись всех элементов в общий массив построчно, где i-позиция строки, j-позиция столбца
 		}
 
 	}
@@ -93,11 +91,10 @@ void Custom::PaintGraph()
 	playBackTimer->stop();
 	x.clear();
 	y.clear();
+
 	for (int i = 0; i<count_row - 1; ++i)
 	{
-		//x[i] = datas[i][p].toDouble();
 		x.push_back(datas[i][p].toDouble());
-		//y[i] = datas[i][v].toDouble();
 		y.push_back(datas[i][v].toDouble());
 	}
 
@@ -143,22 +140,13 @@ void Custom::PaintGraph()
 }
 
 
-
-
-
-
-
-
-
 void Custom::Animate()
 {
 	x.clear();
 	y.clear();
 	for (int i = 0; i<count_row - 1; ++i)
 	{
-		//x[i] = datas[i][p].toDouble();
 		x.push_back(datas[i][p].toDouble());
-		//y[i] = datas[i][v].toDouble();
 		y.push_back(datas[i][v].toDouble());
 	}
 
@@ -182,31 +170,6 @@ void Custom::Animate()
 
 void Custom::PlaybackStep()
 {
-	
-	//TimeElapsed += 50; // 50 - частота срабатывания таймера (в мс)
-	//for (int i = 0; i < x.size(); i++)
-	//{
-	//	if (TimeElapsed >= x[i])
-	//	{
-	//		x2.push_back(x[i]);
-	//		y2.push_back(y[i]);
-	//		x.pop_front();
-	//		y.pop_front();
-	//		i = 0; // если во временном промежутке несколько подходящих "точек", то после pop_front() мы можем
-	//			   // упустить одну. i = 0 запускает заново цикл, чтобы ничего "не потерять"
-	//	}
-	//}
-	//ui.widget->addGraph();
-	//ui.widget->graph(0)->setData(x2, y2);
-	////end of playback check
-
-	//ui.widget->xAxis->setRange(0, max_x);
-	//ui.widget->yAxis->setRange(0, max_y);
-
-	//if (x.size() == 0) playBackTimer->stop();
-	//
-	//ui.widget->replot();
-
 
 	if (x.size() == count_point) {
 		playBackTimer->stop(); 

@@ -18,3 +18,12 @@ D:\C#\Work_version_таймер\Custom\project_Csharp\bin\Debug\project_Csharp.p
 D:\C#\Work_version_таймер\Custom\project_Csharp\obj\Debug\project_Csharp.Form1.resources
 D:\C#\Work_version_таймер\Custom\project_Csharp\obj\Debug\project_Csharp.Properties.Resources.resources
 D:\C#\Work_version_таймер\Custom\project_Csharp\obj\Debug\project_Csharp.csproj.GenerateResource.Cache
+D:\C#\Qt-project\Custom\project_Csharp\bin\Debug\project_Csharp.exe.config
+D:\C#\Qt-project\Custom\project_Csharp\bin\Debug\project_Csharp.exe
+D:\C#\Qt-project\Custom\project_Csharp\bin\Debug\project_Csharp.pdb
+D:\C#\Qt-project\Custom\project_Csharp\obj\Debug\project_Csharp.csprojResolveAssemblyReference.cache
+D:\C#\Qt-project\Custom\project_Csharp\obj\Debug\project_Csharp.Form1.resources
+D:\C#\Qt-project\Custom\project_Csharp\obj\Debug\project_Csharp.Properties.Resources.resources
+D:\C#\Qt-project\Custom\project_Csharp\obj\Debug\project_Csharp.csproj.GenerateResource.Cache
+D:\C#\Qt-project\Custom\project_Csharp\obj\Debug\project_Csharp.exe
+D:\C#\Qt-project\Custom\project_Csharp\obj\Debug\project_Csharp.pdb
