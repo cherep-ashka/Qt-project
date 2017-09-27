@@ -88,18 +88,27 @@ void Custom::Exit()
 
 void Custom::PaintGraph()
 {
+	int k = 0;
 	playBackTimer->stop();
 	x.clear();
 	y.clear();
 
-	for (int i = 0; i<count_row - 1; ++i)
+	//определение ширины экрана
+	QDesktopWidget *d = QApplication::desktop();
+	int cur_x = d->width();
+	int count_intv = cur_x - 1;
+
+	//заполнение массивов данными из файла (старое)
+	for (int i = 0; i<count_row - 1; i=i++)
 	{
 		x.push_back(datas[i][p].toDouble());
 		y.push_back(datas[i][v].toDouble());
+	
 	}
 
+	//поиск макс и мин значений переменных
 	double max_x = x[1], max_y = y[1];
-	for (int h = 2; h < count_row - 1; ++h)
+	for (int h = 2; h < x.size(); ++h)
 	{
 		if (max_x < x[h])
 			max_x = x[h];
@@ -107,6 +116,32 @@ void Custom::PaintGraph()
 		if (max_y < y[h])
 			max_y = y[h];
 	}
+
+	double min_x = x[1], min_y = y[1];
+	for (int h = 2; h < x.size(); ++h)
+	{
+		if (min_x > x[h])
+			min_x = x[h];
+
+		if (min_y > y[h])
+			min_y = y[h];
+	}
+
+	//определение длины интервала/шага
+	float length_intv = (max_x - min_x)/count_intv;
+
+	//создание массива размерностью, равной ширине экрана
+	double *x_next = new double[cur_x];
+	double x_last = 0;
+	x_next[0] = 888;
+
+	//определение граничных x
+	for (int z = 1; z < cur_x-1; z++)
+	{
+		x_last = x_next[z-1];
+		x_next[z] = x_last + length_intv;
+	}
+
 
 	// создаем график и добавляем данные:
 	ui.widget->addGraph();
@@ -144,7 +179,7 @@ void Custom::Animate()
 {
 	x.clear();
 	y.clear();
-	for (int i = 0; i<count_row - 1; ++i)
+	for (int i = 0; i<count_row - 1; i=i+10)
 	{
 		x.push_back(datas[i][p].toDouble());
 		y.push_back(datas[i][v].toDouble());
@@ -152,7 +187,7 @@ void Custom::Animate()
 
 	max_x = x[1];
 	max_y = y[1];
-	for (int h = 2; h < count_row - 1; ++h)
+	for (int h = 2; h < x.size(); ++h)
 	{
 		if (max_x < x[h])
 			max_x = x[h];

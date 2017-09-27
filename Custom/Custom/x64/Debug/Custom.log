@@ -1,1 +1,4 @@
-﻿  Custom.vcxproj -> D:\C#\Qt-project\Custom\x64\Debug\Custom.exe
+﻿  custom.cpp
+custom.cpp(151): warning C4566: символ, представленный универсальным именем символа "\u03B5", невозможно представить в текущей кодовой странице (1251)
+custom.cpp(161): warning C4566: символ, представленный универсальным именем символа "\u03B5", невозможно представить в текущей кодовой странице (1251)
+  Custom.vcxproj -> D:\C#\Qt-project\Custom\x64\Debug\Custom.exe
