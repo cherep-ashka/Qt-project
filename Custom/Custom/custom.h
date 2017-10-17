@@ -19,9 +19,12 @@ public:
 	void SetArgv(char *pargv[]);
 	QVector<double> x, y;
 	QVector<double> x2, y2;
+	QVector<double> x_animation, y_animation;
 	int TimeElapsed=0;
 	QTimer* playBackTimer = new QTimer(this);
 	int count_point;
+	int count_row, p, v;
+	double max_x, max_y;
 	
 
 private:
@@ -34,6 +37,7 @@ private:
 	void Exit();
 	void Animate();
 	//int count_point;
+
 	
 
 	

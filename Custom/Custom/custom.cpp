@@ -4,8 +4,7 @@
 #include <QApplication>
 #include <QtWidgets/QMainWindow>
 
-int count_row, p, v;
-double max_x, max_y;
+
 
 
 
@@ -93,21 +92,15 @@ void Custom::PaintGraph()
 	x.clear();
 	y.clear();
 
-	//определение ширины экрана
-	QDesktopWidget *d = QApplication::desktop();
-	int cur_x = d->width();
-	int count_intv = cur_x - 1;
-
 	//заполнение массивов данными из файла (старое)
 	for (int i = 0; i<count_row - 1; i=i++)
 	{
 		x.push_back(datas[i][p].toDouble());
 		y.push_back(datas[i][v].toDouble());
-	
 	}
 
 	//поиск макс и мин значений переменных
-	double max_x = x[1], max_y = y[1];
+	max_x = x[1], max_y = y[1];
 	for (int h = 2; h < x.size(); ++h)
 	{
 		if (max_x < x[h])
@@ -116,32 +109,6 @@ void Custom::PaintGraph()
 		if (max_y < y[h])
 			max_y = y[h];
 	}
-
-	double min_x = x[1], min_y = y[1];
-	for (int h = 2; h < x.size(); ++h)
-	{
-		if (min_x > x[h])
-			min_x = x[h];
-
-		if (min_y > y[h])
-			min_y = y[h];
-	}
-
-	//определение длины интервала/шага
-	float length_intv = (max_x - min_x)/count_intv;
-
-	//создание массива размерностью, равной ширине экрана
-	double *x_next = new double[cur_x];
-	double x_last = 0;
-	x_next[0] = 888;
-
-	//определение граничных x
-	for (int z = 1; z < cur_x-1; z++)
-	{
-		x_last = x_next[z-1];
-		x_next[z] = x_last + length_intv;
-	}
-
 
 	// создаем график и добавляем данные:
 	ui.widget->addGraph();
@@ -177,7 +144,7 @@ void Custom::PaintGraph()
 
 void Custom::Animate()
 {
-	x.clear();
+	/*x.clear();
 	y.clear();
 	for (int i = 0; i<count_row - 1; i=i+10)
 	{
@@ -194,7 +161,76 @@ void Custom::Animate()
 
 		if (max_y < y[h])
 			max_y = y[h];
+	}*/
+
+	//определение ширины экрана
+	QDesktopWidget *d = QApplication::desktop();
+	int cur_x = d->width();
+	int count_intv = cur_x/5 - 1;
+
+	//поиск макс и мин значений переменных
+	max_x = x[1], max_y = y[1];
+	double min_x = x[1], min_y = y[1];
+	for (int h = 2; h < x.size(); ++h)
+	{
+		if (max_x < x[h])
+			max_x = x[h];
+
+		if (max_y < y[h])
+			max_y = y[h];
+
+		if (min_x > x[h])
+			min_x = x[h];
+
+		if (min_y > y[h])
+			min_y = y[h];
 	}
+
+	//определение длины интервала/шага
+	float length_intv = (max_x - min_x) / count_intv;
+
+	//создание массива размерностью, равной ширине экрана
+	//double x_next = new double[cur_x];
+	
+	/*double x_last = x[1];
+	double y_last = y[1];
+	double x_next = x[2];
+	double y_next = y[2];*/
+	double x_zvezda = x[1] + length_intv;
+	double y_zvezda;
+
+	x_animation.clear();
+	y_animation.clear();
+	x_animation.push_back(x[1]);
+	y_animation.push_back(y[1]);
+	//определение граничных x
+	for (int h = 2; h < x.size(); ++h)
+	{
+		if (x[h] > x_zvezda) {
+			y_zvezda = y[h-1] + ((y[h] - y[h-1]) / (x[h] - x[h-1]))*(x_zvezda - x[h-1]);
+			//проверить, а не является (хзвезда, узвезда) точкой макс или мин)
+			x_animation.push_back(x_zvezda);
+			y_animation.push_back(y_zvezda);
+			//сохранение мин
+			//сохранение макс
+			x_zvezda += length_intv;
+		}
+		else
+		{
+		
+		}
+
+		/*x_last = x_next;
+		y_last = y_next;
+		x_next = x[h];
+		y_next = y[h];*/
+	}
+	x_animation.push_back(x[x.size() - 1]);
+	y_animation.push_back(y[y.size() - 1]);
+
+	x2.clear();
+	y2.clear();
+
 	//int sp = ui.spinBox->value;
 	playBackTimer->start(ui.spinBox->value());
 	ui.widget->addGraph();
@@ -206,25 +242,25 @@ void Custom::Animate()
 void Custom::PlaybackStep()
 {
 
-	if (x.size() == count_point) {
+	if (x_animation.size() == count_point) {
 		playBackTimer->stop(); 
 		return;
 	}
 	//TimeElapsed += 50; // 50 - частота срабатывания таймера (в мс)
-	x2.clear();
-	y2.clear();
-	for (int i = 0; i < count_point; i++)
-	{
+	/*x2.clear();
+	y2.clear();*/
+	//for (int i = 0; i < count_point; i++)
+	//{
 		//if (TimeElapsed >= x[i])
 		//{
-			x2.push_back(x[i]);
-			y2.push_back(y[i]);
+			x2.push_back(x_animation[count_point-1]);
+			y2.push_back(y_animation[count_point-1]);
 			/*x.pop_front();
 			y.pop_front();*/
 			//i = 0; // если во временном промежутке несколько подходящих "точек", то после pop_front() мы можем
 				   // упустить одну. i = 0 запускает заново цикл, чтобы ничего "не потерять"
 		//}
-	}
+	//}
 	++count_point;
 	
 	ui.widget->graph(0)->setData(x2, y2);
